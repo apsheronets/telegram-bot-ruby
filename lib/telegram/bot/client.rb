@@ -58,10 +58,12 @@ module Telegram
       end
 
       def log_incoming_message(message)
-        uid = message.from ? message.from.id : nil
-        logger.info(
-          format('Incoming message: text="%s" uid=%s', message, uid)
-        )
+        unless message.nil?
+          uid = message.from ? message.from.id : nil
+          logger.info(
+            format('Incoming message: text="%s" uid=%s', message, uid)
+          )
+        end
       end
     end
   end
