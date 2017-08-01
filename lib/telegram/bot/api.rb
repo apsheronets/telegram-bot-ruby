@@ -2,13 +2,19 @@ module Telegram
   module Bot
     class Api
       ENDPOINTS = %w(
-        getUpdates setWebhook getMe sendMessage forwardMessage sendPhoto
-        sendAudio sendDocument sendSticker sendVideo sendVoice sendLocation
-        sendVenue sendContact sendChatAction getUserProfilePhotos getFile
-        kickChatMember unbanChatMember answerCallbackQuery editMessageText
-        editMessageCaption editMessageReplyMarkup answerInlineQuery getChat
-        leaveChat getChatAdministrators getChatMember getChatMembersCount
-        sendGame setGameScore getGameHighScores getWebhookInfo
+        getUpdates setWebhook deleteWebhook getWebhookInfo getMe sendMessage
+        forwardMessage sendPhoto sendAudio sendDocument sendVideo sendVoice
+        sendVideoNote sendLocation sendVenue sendContact sendChatAction
+        getUserProfilePhotos getFile kickChatMember unbanChatMember
+        restrictChatMember promoteChatMember leaveChat getChat
+        getChatAdministrators exportChatInviteLink setChatPhoto deleteChatPhoto
+        setChatTitle setChatDescription pinChatMessage unpinChatMessage
+        getChatMembersCount getChatMember answerCallbackQuery editMessageText
+        editMessageCaption editMessageReplyMarkup deleteMessage
+        sendSticker getStickerSet uploadStickerFile createNewStickerSet
+        addStickerToSet setStickerPositionInSet deleteStickerFromSet
+        answerInlineQuery sendInvoice answerShippingQuery answerPreCheckoutQuery
+        sendGame setGameScore getGameHighScores
       ).freeze
       REPLY_MARKUP_TYPES = [
         Telegram::Bot::Types::ReplyKeyboardMarkup,
@@ -88,7 +94,9 @@ module Telegram
       end
 
       def jsonify_inline_query_results(value)
-        return value unless value.is_a?(Array) && value.all? { |i| INLINE_QUERY_RESULT_TYPES.include?(i.class) }
+        return value unless
+          value.is_a?(Array) &&
+          value.all? { |i| INLINE_QUERY_RESULT_TYPES.include?(i.class) }
         value.map { |i| i.to_compact_hash.select { |_, v| v } }.to_json
       end
 
